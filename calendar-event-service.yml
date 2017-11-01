@@ -1,0 +1,91 @@
+spring:
+  application:
+    name: calendar-event-service
+ 
+  jersey:
+    application-path: /api
+
+server:
+  servlet-path: /
+  
+info:
+  build:
+    artifact: '@project.artifactId@'
+    version: '@project.version@'
+    revision: '@buildNumber@'    
+
+management:
+  health:
+    rabbit:
+      enabled: false
+
+---
+
+spring:
+  profiles: local,junit
+  
+calendar:
+  url: http://localhost:8080/api/getEvent   
+#  url: http://localhost:8080/calendar-event-service/api/getEvent
+  
+logging:
+  config: classpath:console-logback-spring.xml
+  
+logger-path: /var/log
+
+---
+  
+spring:
+  profiles: dev,appdev
+  
+calendar:
+  url: https://apps.w3.st/CalendarEvent/d/getEvent
+  
+logging:
+  config: classpath:console-logback-spring.xml
+
+logger-path: /opt/tomcat/latest/logs/cxm-outbound
+
+---
+
+spring:
+  profiles: qa
+  
+calendar:
+  url: https://apps.w3.st/CalendarEvent/qa/getEvent
+#  url: http://10.18.129.182:8280/services/CalendarEvent/api/getEvent
+
+logger-path: /opt/tomcat/latest/logs/cxm-outbound
+
+---
+
+spring:
+  profiles: preprod
+  
+calendar:
+  url: https://apps.w3.st/CalendarEvent/pp/getEvent
+
+logger-path: /opt/tomcat/latest/logs/cxm-outbound
+
+---
+
+spring:
+  profiles: prod
+  
+calendar:
+  url: https://apps.w3.st/CalendarEvent/getEvent
+
+logger-path: /opt/tomcat/latest/logs/cxm-outbound
+
+---
+
+logging:
+  config: classpath:logback-spring.xml
+  file: ${logger-path}/calendar-event-service/calendar-event-service.log
+  level:
+    root: ERROR
+    com:
+      west:
+        brickhouse:
+          calendar:
+            event: INFO
