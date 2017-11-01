@@ -83,9 +83,9 @@ logging:
   config: classpath:logback-spring.xml
   file: ${logger-path}/calendar-event-service/calendar-event-service.log
   level:
-    root: ERROR
+    root: DEBUG
     com:
       west:
         brickhouse:
           calendar:
-            event: INFO
+            event: DEBUG
